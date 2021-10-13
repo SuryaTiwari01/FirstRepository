@@ -1,19 +1,100 @@
 <template>
-    <lightning-card title="Login Form Design">
+<template if:false={isLogindetailsMatched}>
+    <lightning-card icon-name="action:new_contact" title="Login Form Design">
+    
+    <h3 class="slds-section-title--divider" style="margin-right:30px; margin-left:15px; background: rgb(0, 57, 107); color: rgb(236, 233, 233);">Login Information</h3>
 
-        <div class="loginbox">
-            <h1>Login Here</h1>
-            
-            <form>
-                <p>Username</p>
-                <lightning-input type="text" label="Enter some text"></lightning-input>
-                <p>Password</p>
-                <lightning-input type="password" label="Enter your password" name="input1"></lightning-input>
-                <a href="#">Lost your password?</a><br/>
-                <a href="#">don't have an Account?</a>
-            </form>
-            
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col">
+                <div class="slds-var-p-around_small slds-var-m-horizontal_large" style="width:40%; margin: auto;">
+                    <div class="slds-border_top slds-border_bottom slds-border_left slds-border_right">
+                        <div class="slds-form-element" style="padding-left:30px;padding-right:30px; ">
+                            <div class="slds-form-element__control">   
+                                <div class="slds-var-p-top_small">
+                                    <form>
+                                        <div class="slds-var-p-top_small">
+                                            <lightning-input name="userName" label="User Name" placeholder="Enter UserName" id="username" onchange={handleChange} required="true"></lightning-input>
+                                        </div>
+                                        <div class="slds-var-p-top_small">
+                                            <lightning-input name="password" type="password" label="Password" placeholder="Enter Password" onchange={handleChange} id="password" required="true"></lightning-input>
+                                        </div>
+                                        
+                                        <div class="slds-var-p-top_small slds-var-p-bottom_small" style="margin-left: 66%;">
+                                            <lightning-button label="Login" title="Press login" onclick={handleClick} class="slds-var-m-left_x-small"></lightning-button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </lightning-card>
-    
+    </template>
+        <template if:true={isLogindetailsMatched}>
+           <lightning-card>
+                <div class="slds-page-header">
+                    <div class="slds-page-header__row">
+                      <div class="slds-page-header__col-title">
+                        <div class="slds-media">
+                          <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                              <div class="slds-page-header__name-title">
+                                <h1>
+                                  <span class="slds-page-header__title slds-truncate">Data-Table</span>
+                                </h1>
+                              </div>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+              
+            <template if:true={selectedObject}>
+                <div slot="actions">
+                    <lightning-button label = "Create New" onclick={navigateToNewRecordPage}></lightning-button>
+                </div>
+            </template>
+        
+            
+            <div class="slds-border_top" style="width:20rem;padding:1rem">
+                <div class="slds-form-element">
+                    <label class="slds-form-element__label" >
+                        <span class="slds-page-header__title slds-truncate">Select Object</span>
+                    </label>
+                    <div class="slds-form-element__control">
+                        <div class="slds-select_container">
+                            
+                            <select class="slds-select" 
+                                    onchange={selectionChangeHandler}>
+                                    
+                                <option> Select </option>
+                                <option class="uiInputSelectOption" value="Account">Account</option>
+                                <option class="uiInputSelectOption" value="Contact">Contact</option>
+                                <option class="uiInputSelectOption" value="Lead">Lead</option>
+                            
+                            </select>
+        
+                        </div>
+                    </div>
+                </div>
+            </div>
+                
+                <template if:true={dataList}>
+                    <h2> {selectedObject} Datatable</h2>
+                        <lightning-datatable 
+                        data = {dataList} 
+                        columns= {columns} 
+                        key-field = "Id">
+                        </lightning-datatable>
+                </template>
+        
+                <template if:true={error}>
+                    {error}
+                </template>
+            </lightning-card>
+        </template>
+
 </template>
